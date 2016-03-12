@@ -10,13 +10,17 @@ const
 , mainBowerFiles = require('main-bower-files')
 , cleanCSS = require('gulp-clean-css')
 , sourcemaps = require('gulp-sourcemaps')
+, postcss = require('gulp-postcss')
+, autoprefixer = require('autoprefixer')
 , env = {env: 'dev' };
+
+const processors = [autoprefixer()];
 
 gulp.task('server', function(){
   gulp.src('./dist')
   .pipe(server({
     livereload : true
-  , port       : 9999
+  , port       : 8080
 }));
 });
 
@@ -25,6 +29,7 @@ gulp.task('stylus', function(){
   .pipe(sourcemaps.init())
   .pipe(stylus())
   .pipe(cleanCSS())
+  .pipe(postcss(processors))
   .pipe(concat('css.min.css'))
   .pipe(sourcemaps.write())
   .pipe(gulp.dest('./dist'));
