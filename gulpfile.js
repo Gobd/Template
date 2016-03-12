@@ -37,6 +37,7 @@ gulp.task('stylus', function(){
 
 gulp.task('bowerJs', function(){
   gulp.src(mainBowerFiles('**/*.js', env))
+  .pipe(concat('lib.min.js'))
   .pipe(gulp.dest('./dist'));
 });
 
