@@ -11,9 +11,8 @@ const
 , cleanCSS = require('gulp-clean-css')
 , sourcemaps = require('gulp-sourcemaps')
 , postcss = require('gulp-postcss')
-, autoprefixer = require('autoprefixer');
-
-const processors = [autoprefixer()];
+, autoprefixer = require('autoprefixer')
+, processors = [autoprefixer()];
 
 gulp.task('server', function(){
   gulp.src('./dist')
