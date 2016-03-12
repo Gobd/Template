@@ -6,10 +6,10 @@ const
 , concat   = require('gulp-concat')
 , uglify   = require('gulp-uglify')
 , server   = require('gulp-webserver')
-, uglicss  = require('gulp-uglifycss')
 , annotate = require('gulp-ng-annotate')
 , mainBowerFiles = require('main-bower-files')
 , cleanCSS = require('gulp-clean-css')
+, sourcemaps = require('gulp-sourcemaps')
 , env = {env: 'dev' };
 
 gulp.task('server', function(){
@@ -22,10 +22,11 @@ gulp.task('server', function(){
 
 gulp.task('stylus', function(){
   gulp.src('./src/styles/*.styl')
+  .pipe(sourcemaps.init())
   .pipe(stylus())
-  .pipe(uglicss())
   .pipe(cleanCSS())
   .pipe(concat('css.min.css'))
+  .pipe(sourcemaps.write())
   .pipe(gulp.dest('./dist'));
 });
 
@@ -36,7 +37,6 @@ gulp.task('bowerJs', function(){
 
 gulp.task('bowerCss', function(){
   gulp.src(mainBowerFiles('**/*.css'))
-  .pipe(uglicss())
   .pipe(cleanCSS())
   .pipe(concat('lib.min.css'))
   .pipe(gulp.dest('./dist'));
@@ -44,9 +44,11 @@ gulp.task('bowerCss', function(){
 
 gulp.task('js', function(){
   gulp.src('./src/scripts/*.js')
+  .pipe(sourcemaps.init())
   .pipe(annotate())
   .pipe(uglify())
   .pipe(concat('js.min.js'))
+  .pipe(sourcemaps.write())
   .pipe(gulp.dest('./dist'));
 });
 
