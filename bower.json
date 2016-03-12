@@ -19,16 +19,27 @@
   "dependencies": {
     "AngularJS": "angular-latest#^1.5.0",
     "angular-ui-router": "^0.2.18",
-    "normalize-css": "normalize.css#^3.0.3"
+    "normalize-css": "normalize.css#^3.0.3",
+    "bluebird": "^3.3.4"
   },
   "overrides": {
-    "angular": {"main":{
-                "dev": "./angular.js",
-                "prod": "./angular.min.js"
-            }},
-    "angular-ui-router": {"main":{
-                "dev": "./release/angular-ui-router.js",
-                "prod": "./release/angular-ui-router.min.js"
-            }}
-          }
+    "angular": {
+      "main": {
+        "dev": "./angular.js",
+        "prod": "./angular.min.js"
+      }
+    },
+    "angular-ui-router": {
+      "main": {
+        "dev": "./release/angular-ui-router.js",
+        "prod": "./release/angular-ui-router.min.js"
+      }
+    },
+    "bluebird": {
+      "main": {
+        "dev": "",
+        "prod": ""
+      }
+    }
+  }
 }
