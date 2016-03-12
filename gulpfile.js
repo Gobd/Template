@@ -11,8 +11,7 @@ const
 , cleanCSS = require('gulp-clean-css')
 , sourcemaps = require('gulp-sourcemaps')
 , postcss = require('gulp-postcss')
-, autoprefixer = require('autoprefixer')
-, env = {env: 'dev' };
+, autoprefixer = require('autoprefixer');
 
 const processors = [autoprefixer()];
 
@@ -36,8 +35,11 @@ gulp.task('stylus', function(){
 });
 
 gulp.task('bowerJs', function(){
-  gulp.src(mainBowerFiles('**/*.js', env))
+  gulp.src(mainBowerFiles('**/*.js'))
+  .pipe(sourcemaps.init())
+  .pipe(uglify())
   .pipe(concat('lib.min.js'))
+  .pipe(sourcemaps.write())
   .pipe(gulp.dest('./dist'));
 });
 
