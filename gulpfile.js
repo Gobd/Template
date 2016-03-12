@@ -29,7 +29,7 @@ gulp.task('stylus', function(){
   .pipe(cleanCSS())
   .pipe(postcss(processors))
   .pipe(concat('css.min.css'))
-  .pipe(sourcemaps.write())
+  .pipe(sourcemaps.write('/maps'))
   .pipe(gulp.dest('./dist'));
 });
 
@@ -38,7 +38,7 @@ gulp.task('bowerJs', function(){
   .pipe(sourcemaps.init())
   .pipe(uglify())
   .pipe(concat('lib.min.js'))
-  .pipe(sourcemaps.write())
+  .pipe(sourcemaps.write('/maps'))
   .pipe(gulp.dest('./dist'));
 });
 
@@ -55,7 +55,7 @@ gulp.task('js', function(){
   .pipe(annotate())
   .pipe(uglify())
   .pipe(concat('js.min.js'))
-  .pipe(sourcemaps.write())
+  .pipe(sourcemaps.write('/maps'))
   .pipe(gulp.dest('./dist'));
 });
 
