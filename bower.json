@@ -24,11 +24,8 @@
   },
   "overrides": {
     "bluebird": {
-      "main": {
-        "dev": "",
-        "prod": ""
-      }
+      "main": {}
     }
-    
+
   }
 }
