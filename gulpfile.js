@@ -35,7 +35,6 @@ gulp.task('stylus', function(){
 });
 
 gulp.task('bowerJs', function(){
-  console.log(mainBowerFiles('**/*.js'));
   gulp.src(mainBowerFiles('**/*.js'))
   .pipe(sourcemaps.init())
   .pipe(uglify())
