@@ -20,7 +20,7 @@ gulp.task('server', function(){
   gulp.src('./dist')
   .pipe(server({
     livereload : true
-  , port       : 8080
+  , port       : 8081
 }));
 });
 
