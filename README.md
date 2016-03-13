@@ -39,11 +39,3 @@ Stylus lets you write less, and Jeet is a flexible grid system. There is also Au
 ### If you feel like the project could use anything else, make a pull request
 
 This is a template I made so I don't have to set up gulp, testing, file structure, npm, bower, etc. every time I start a project. If you think anything could be done better or is missing please make a pull request or send me an email.
-
-endpoints require
-
-bluebird
-lodash
-mongoose
-
-make a globals file for this
