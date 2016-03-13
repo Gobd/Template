@@ -21,11 +21,5 @@
     "angular-ui-router": "^0.2.18",
     "normalize-css": "normalize.css#^3.0.3",
     "bluebird": "^3.3.4"
-  },
-  "overrides": {
-    "bluebird": {
-      "main": {}
-    }
-
   }
 }

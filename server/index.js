@@ -5,7 +5,7 @@ var express = require('express')
   , app = express()
   , mongoose = require('mongoose')
   , session = require('express-session')
-  , config = require('./.config.js')
+  , config = require('./.config')
   , db = mongoose.connection;
 
 

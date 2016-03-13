@@ -28,9 +28,9 @@ Check out the tests folder at /server/tests and write some tests, I've included 
 
 If you're not using tests remove the gulp-mocha task from gulp and delete the tests folder. Also feel free to remove the mocha, chai, and chai-http dependencies from the packages.json files and you global npm install.
 
-## You'll notice an override in the bower.json file
+## I've included Lodash and Bluebird in the endpoints file
 
-This is for files that are server specific like [Bluebird Promise](http://bluebirdjs.com/docs/api-reference.html). I like to replace the Mongoose Promises with [Bluebird Promise](http://bluebirdjs.com/docs/api-reference.html) because they have many useful features that Mongoose Promises lack. If you install any dependencies with bower that are server specific be sure to add overrides for them so they won't be concatenated to your lib.min.js files in the /dist folder. 
+I like to replace the Mongoose Promises with [Bluebird Promise](http://bluebirdjs.com/docs/api-reference.html) because they have many useful features that Mongoose Promises lack. Also, [Lodash](https://lodash.com/docs) has tons of useful functions that are faster than the built in function like forEach that would be good to use instead of the built ins, check the API for anything you're having trouble with and maybe there is something that would make it easier.
 
 ### If you feel like the project could use anything else, make a pull request
 
