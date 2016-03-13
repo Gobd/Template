@@ -12,6 +12,7 @@ const
 , sourcemaps = require('gulp-sourcemaps')
 , postcss = require('gulp-postcss')
 , autoprefixer = require('autoprefixer')
+, mocha = require('gulp-mocha')
 , processors = [autoprefixer()];
 
 gulp.task('server', function(){
@@ -59,10 +60,22 @@ gulp.task('js', function(){
   .pipe(gulp.dest('./dist'));
 });
 
+gulp.task('tests', function(){
+    return gulp.src('./server/tests/*.js', {read: false})
+        .pipe(mocha())
+        .once('error', function(){
+            process.exit(1);
+        })
+        .once('end', function(){
+            process.exit();
+        });
+});
+
 gulp.task('watch', function(){
   gulp.watch('./src/styles/*.styl', ['stylus']);
   gulp.watch('./src/scripts/*.js', ['js']);
+  gulp.watch('./server/tests/*.js', ['tests']);
   gulp.watch('./dist/*.html');
 });
 
-gulp.task('default', ['stylus', 'js', 'server', 'watch', 'bowerJs', 'bowerCss']);
+gulp.task('default', ['stylus', 'js', 'server', 'watch', 'bowerJs', 'bowerCss', 'tests']);
