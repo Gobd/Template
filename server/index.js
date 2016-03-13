@@ -2,20 +2,29 @@ var express = require('express')
   , bodyParser = require('body-parser')
   , cors = require('cors')
   , port = 8080
-  , app = express()
+  , localStrat =require('passport-local')
+  , passport = require('passport')
+  , facebookStrat = require('passport-facebook')
+  , googleStrat = require ('passport-google-oauth')
   , mongoose = require('mongoose')
   , session = require('express-session')
   , config = require('./.config')
-  , db = mongoose.connection;
+  , MongoStore = require('connect-mongo')(session)
+  , app = express();
 
-
-mongoose.connect('mongodb://localhost/ecommerce');
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
+mongoose.connect('mongodb://localhost/personal');
+mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
+mongoose.connection.once('open', function() {
     console.log('Connected to MongoDB!');
 });
 
-app.use(session({secret: config.secret}));
+app.use(session(
+  {
+    secret: config.secret,
+    store: new MongoStore({ mongooseConnection: mongoose.connection })
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(express.static(__dirname + '../dist'));
 app.use(cors());
