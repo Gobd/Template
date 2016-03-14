@@ -21,7 +21,7 @@ gulp.task('server', function(){
   gulp.src('./dist')
   .pipe(server({
     livereload : true
-  , port       : 8081
+  , port       : 3000
 }));
 });
 
@@ -53,7 +53,7 @@ gulp.task('bowerCss', function(){
 });
 
 gulp.task('js', function(){
-  gulp.src('./src/scripts/*.js')
+  gulp.src('./src/scripts/**/*.js')
   .pipe(sourcemaps.init())
   .pipe(annotate())
   .pipe(uglify())
