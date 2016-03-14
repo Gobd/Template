@@ -1,6 +1,8 @@
 angular.module('app', ['ngResource', 'ngMessages', 'ngAnimate', 'ui.router', 'satellizer', 'toastr'])
 
-  .config(function($authProvider, $stateProvider, $urlRouterProvider) {
+  .config(function($authProvider, $stateProvider, $urlRouterProvider, $locationProvider) {
+
+    $locationProvider.html5Mode(true);
 
     $authProvider.facebook({
       clientId: '1670205403245071'
