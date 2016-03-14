@@ -70,9 +70,9 @@ gulp.task('js', function(){
 // });
 
 gulp.task('watch', function(){
-  gulp.watch('./src/styles/*.styl', ['stylus']);
-  gulp.watch('./src/scripts/*.js', ['js']);
-  gulp.watch('./dist/*.html');
+  gulp.watch('./src/styles/**/*.styl', ['stylus']);
+  gulp.watch('./src/scripts/**/*.js', ['js']);
+  gulp.watch('./dist/**/*.html');
 });
 
 gulp.task('default', ['stylus', 'js', 'server', 'watch', 'bowerJs', 'bowerCss']);

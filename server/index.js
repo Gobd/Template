@@ -5,7 +5,6 @@ var express = require('express')
   , compression = require('compression')
   , mongoose = require('mongoose')
   , config = require('./config')
-  , session = require('express-session')
   , bcrypt = require('bcryptjs')
   , jwt = require('jwt-simple')
   , request = require('request')
@@ -20,7 +19,6 @@ mongoose.connection.once('open', function() {
 });
 
 app.use(compression());
-app.use(session({ secret: config.secret }));
 app.use(express.static('../dist'));
 app.use(cors());
 app.options('*', cors());
