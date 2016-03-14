@@ -36,6 +36,16 @@ gulp.task('stylus', function(){
   .pipe(gulp.dest('./dist/css'));
 });
 
+gulp.task('bowerCss', function(){
+  gulp.src(mainBowerFiles('**/*.css'))
+  .pipe(sourcemaps.init())
+  .pipe(cleanCSS())
+  .pipe(postcss(processors))
+  .pipe(concat('lib.min.css'))
+  .pipe(sourcemaps.write('/maps'))
+  .pipe(gulp.dest('./dist/css'));
+});
+
 gulp.task('bowerJs', function(){
   gulp.src(mainBowerFiles('**/*.js'))
   .pipe(sourcemaps.init())
@@ -43,13 +53,6 @@ gulp.task('bowerJs', function(){
   .pipe(concat('lib.min.js'))
   .pipe(sourcemaps.write('/maps'))
   .pipe(gulp.dest('./dist/js'));
-});
-
-gulp.task('bowerCss', function(){
-  gulp.src(mainBowerFiles('**/*.css'))
-  .pipe(cleanCSS())
-  .pipe(concat('lib.min.css'))
-  .pipe(gulp.dest('./dist/css'));
 });
 
 gulp.task('js', function(){
