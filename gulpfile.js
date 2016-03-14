@@ -75,4 +75,4 @@ gulp.task('watch', function(){
   gulp.watch('./dist/**/*.html');
 });
 
-gulp.task('default', ['stylus', 'js', 'server', 'watch', 'bowerJs', 'bowerCss']);
+gulp.task('default', ['stylus', 'js', 'bowerJs', 'bowerCss', 'watch', 'server']);
