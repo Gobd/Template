@@ -13,8 +13,9 @@ const
 , postcss = require('gulp-postcss')
 , autoprefixer = require('autoprefixer')
 , mocha = require('gulp-mocha')
-, jeet = require("jeet")
-, nodemon = require('nodemon')
+, order = require("gulp-order")
+, rupture = require('rupture')
+, uncss = require('gulp-uncss')
 , processors = [autoprefixer()];
 
 gulp.task('server', function(){
@@ -28,7 +29,7 @@ gulp.task('server', function(){
 gulp.task('stylus', function(){
   gulp.src('./src/styles/*.styl')
   .pipe(sourcemaps.init())
-  .pipe(stylus({use: [jeet()]}))
+  .pipe(stylus({use: rupture()}))
   .pipe(cleanCSS())
   .pipe(postcss(processors))
   .pipe(concat('css.min.css'))
@@ -42,6 +43,7 @@ gulp.task('bowerCss', function(){
   .pipe(cleanCSS())
   .pipe(postcss(processors))
   .pipe(concat('lib.min.css'))
+  // .pipe(uncss({html: ['dist/**/*.html']}))
   .pipe(sourcemaps.write('/maps'))
   .pipe(gulp.dest('./dist/css'));
 });
@@ -49,7 +51,7 @@ gulp.task('bowerCss', function(){
 gulp.task('bowerJs', function(){
   gulp.src(mainBowerFiles('**/*.js'))
   .pipe(sourcemaps.init())
-  .pipe(uglify())
+  // .pipe(uglify())
   .pipe(concat('lib.min.js'))
   .pipe(sourcemaps.write('/maps'))
   .pipe(gulp.dest('./dist/js'));
@@ -58,8 +60,13 @@ gulp.task('bowerJs', function(){
 gulp.task('js', function(){
   gulp.src('./src/scripts/**/*.js')
   .pipe(sourcemaps.init())
-  .pipe(annotate())
-  .pipe(uglify())
+  // .pipe(annotate())
+  // .pipe(uglify())
+  .pipe(order([
+   "satellizer.js",
+   "app.js",
+   "**/*.js"
+ ]))
   .pipe(concat('js.min.js'))
   .pipe(sourcemaps.write('/maps'))
   .pipe(gulp.dest('./dist/js'));
