@@ -13,9 +13,10 @@ function createJWT(user) {
   var payload = {
     sub: user._id,
     iat: moment().unix(),
-    exp: moment().add(14, 'days').unix()
+    exp: moment().add(14, 'days').unix(),
+    role: user.role
   };
-  return jwt.encode(payload, config.TOKEN_SECRET);
+  return jwt.encode(payload, config.TOKEN_SECRET, 'HS256');
 }
 
 module.exports = {
@@ -100,7 +101,7 @@ module.exports = {
               return res.status(409).send({ message: 'There is already a Google account that belongs to you' });
             }
             var token = req.header('Authorization').split(' ')[1];
-            var payload = jwt.decode(token, config.TOKEN_SECRET);
+            var payload = jwt.decode(token, config.TOKEN_SECRET, false, 'HS256');
             User.findById(payload.sub, function(err, user) {
               if (!user) {
                 return res.status(400).send({ message: 'User not found' });
@@ -164,7 +165,7 @@ module.exports = {
               return res.status(409).send({ message: 'There is already a Facebook account that belongs to you' });
             }
             var token = req.header('Authorization').split(' ')[1];
-            var payload = jwt.decode(token, config.TOKEN_SECRET);
+            var payload = jwt.decode(token, config.TOKEN_SECRET, false, 'HS256');
             User.findById(payload.sub, function(err, user) {
               if (!user) {
                 return res.status(400).send({ message: 'User not found' });

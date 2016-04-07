@@ -30,7 +30,7 @@ gulp.task('stylus', function(){
   gulp.src('./src/styles/*.styl')
   .pipe(sourcemaps.init())
   .pipe(stylus({use: rupture()}))
-  .pipe(cleanCSS())
+  // .pipe(cleanCSS())
   .pipe(postcss(processors))
   .pipe(concat('css.min.css'))
   .pipe(sourcemaps.write('/maps'))
