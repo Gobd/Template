@@ -225,7 +225,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
         Shared.getPayload = function() {
           var token = storage.get(tokenName);
 
-          if (token && token.split('.').length === 4) {
+          if (token && token.split('.').length === 3) {
             try {
               var base64Url = token.split('.')[1];
               var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -277,7 +277,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
           // A token is present
           if (token) {
             // Token with a valid JWT format XXX.YYY.ZZZ
-            if (token.split('.').length === 4) {
+            if (token.split('.').length === 3) {
               // Could be a valid JWT or an access token with the same format
               try {
                 var base64Url = token.split('.')[1];

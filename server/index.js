@@ -37,11 +37,11 @@ app.post('/auth/login', accounts.postAuthLogin);
 app.post('/auth/signup', accounts.postAuthSignup);
 app.post('/auth/google', accounts.postAuthGoogle);
 app.post('/auth/facebook', accounts.postAuthFacebook);
-app.post('/auth/unlink', ensureAuthenticated, accounts.postAuthUnlink);
+app.post('/auth/twitter', accounts.postAuthTwitter);
+app.post('/auth/unlink', checkRole('user'), accounts.postAuthUnlink);
 
 function checkRole(role) {
   return function(req, res, next) {
-    var role = role;
     if (!req.header('Authorization')) {
       return res.status(401).send({
         message: 'Please make sure your request has an Authorization header'
@@ -60,7 +60,7 @@ function checkRole(role) {
       return res.status(401).send({
         message: 'Token has expired'
       });
-    } else if (_.indexOf(payload.role, userRoles) >= _.indexOf(role, userRoles)) {
+    } else if (_.indexOf(userRoles, payload.role) >= _.indexOf(userRoles, role)) {
       req.user = payload.sub;
       next();
     } else {

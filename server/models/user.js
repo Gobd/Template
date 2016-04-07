@@ -6,11 +6,13 @@ GLOBAL.userRoles = ['user', 'business', 'admin'];
 var userSchema = new mongoose.Schema({
   email: { type: String, unique: true, lowercase: true },
   password: { type: String, select: false },
+  provider: String,
   displayName: String,
   picture: String,
   facebook: String,
   google: String,
-  role: {type: String, default: 'user'}
+  twitter: String,
+  role: { type: String, default: 'user', enum: userRoles }
 });
 
 userSchema.pre('save', function(next) {

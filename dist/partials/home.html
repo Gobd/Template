@@ -1,1 +1,22 @@
 Here's the home template
+<br/>
+{{test}}
+<br/>
+{{isAuthenticated()}}
+<div ng-if="isAuthenticated()">
+  is auth
+</div>
+<br/>
+<div ng-if="!isAuthenticated()">
+  not auth
+</div>
+
+<br/>
+<div ng-if="isAuthenticated() === 'user'">
+  for user
+</div>
+
+<br/>
+<div ng-if="isAuthenticated() === 'admin'">
+  for admin
+</div>
