@@ -23,14 +23,14 @@ module.exports = {
 
   getApiMe : function(req, res) {
     User.findById(req.user, function(err, user) {
-      res.send(user);
+      res.json(user);
     });
   },
 
   putApiMe : function(req, res) {
     User.findById(req.user, function(err, user) {
       if (!user) {
-        return res.status(400).send({ message: 'User not found' });
+        return res.status(400).json({ message: 'User not found' });
       }
       user.displayName = req.body.displayName || user.displayName;
       user.email = req.body.email || user.email;
@@ -43,13 +43,13 @@ module.exports = {
   postAuthLogin : function(req, res) {
     User.findOne({ email: req.body.email }, '+password', function(err, user) {
       if (!user) {
-        return res.status(401).send({ message: 'Invalid email and/or password' });
+        return res.status(401).json({ message: 'Invalid email and/or password' });
       }
       user.comparePassword(req.body.password, function(err, isMatch) {
         if (!isMatch) {
-          return res.status(401).send({ message: 'Invalid email and/or password' });
+          return res.status(401).json({ message: 'Invalid email and/or password' });
         }
-        res.send({ token: createJWT(user) });
+        res.json({ token: createJWT(user) });
       });
     });
   },
@@ -57,7 +57,7 @@ module.exports = {
     postAuthSignup : function(req, res) {
     User.findOne({ email: req.body.email }, function(err, existingUser) {
       if (existingUser) {
-        return res.status(409).send({ message: 'Email is already taken' });
+        return res.status(409).json({ message: 'Email is already taken' });
       }
       var user = new User({
         provider: 'Username & Password',
@@ -67,9 +67,9 @@ module.exports = {
       });
       user.save(function(err, result) {
         if (err) {
-          res.status(500).send({ message: err.message });
+          res.status(500).json({ message: err.message });
         }
-        res.send({ token: createJWT(result) });
+        res.json({ token: createJWT(result) });
       });
     });
   },
@@ -102,7 +102,7 @@ module.exports = {
          json: true
        }, function(err, response, profile) {
          if (profile.error) {
-           return res.status(500).send({
+           return res.status(500).json({
              message: profile.error.message
            });
          }
@@ -110,7 +110,7 @@ module.exports = {
          if (req.header('Authorization')) {
            User.findOne({ google: profile.sub }, function(err, existingUser) {
              if (existingUser) {
-               return res.status(409).send({
+               return res.status(409).json({
                  message: 'There is already a Google account that belongs to you'
                });
              }
@@ -118,7 +118,7 @@ module.exports = {
              var payload = jwt.decode(token, config.TOKEN_SECRET, false, 'HS256' );
              User.findById(payload.sub, function(err, user) {
                if (!user) {
-                 return res.status(400).send({
+                 return res.status(400).json({
                    message: 'User not found'
                  });
                }
@@ -129,7 +129,7 @@ module.exports = {
                user.displayName = user.displayName || profile.name;
                user.save(function() {
                  var token = createJWT(user);
-                 res.send({
+                 res.json({
                    token: token
                  });
                });
@@ -140,11 +140,11 @@ module.exports = {
            User.findOne({email: profile.email}, function(err, existingUser) {
              if (existingUser) {
                  if (existingUser.provider === 'Google') {
-                   return res.send({
+                   return res.json({
                      token: createJWT(existingUser)
                    });
                  } else if (existingUser.provider === 'Facebook' || existingUser.provider === 'Username & Password' || existingUser.provider === 'Twitter') {
-                   return res.status(400).send({message: 'You already have a ' + existingUser.provider + ' Account'});
+                   return res.status(400).json({message: 'You already have a ' + existingUser.provider + ' Account'});
                  }
              } else {
                var user = new User();
@@ -155,7 +155,7 @@ module.exports = {
                user.displayName = profile.name;
                user.save(function(err) {
                  var token = createJWT(user);
-                 res.send({
+                 res.json({
                    token: token
                  });
                });
@@ -184,7 +184,7 @@ module.exports = {
        json: true
      }, function(err, response, accessToken) {
        if (response.statusCode !== 200) {
-         return res.status(500).send({
+         return res.status(500).json({
            message: accessToken.error.message
          });
        }
@@ -196,14 +196,14 @@ module.exports = {
          json: true
        }, function(err, response, profile) {
          if (response.statusCode !== 200) {
-           return res.status(500).send({
+           return res.status(500).json({
              message: profile.error.message
            });
          }
          if (req.header('Authorization')) {
            User.findOne({ facebook: profile.id }, function(err, existingUser) {
              if (existingUser) {
-               return res.status(409).send({
+               return res.status(409).json({
                  message: 'There is already a Facebook account that belongs to you'
                });
              }
@@ -211,7 +211,7 @@ module.exports = {
              var payload = jwt.decode(token, config.TOKEN_SECRET, false, 'HS256');
              User.findById(payload.sub, function(err, user) {
                if (!user) {
-                 return res.status(400).send({
+                 return res.status(400).json({
                    message: 'User not found'
                  });
                }
@@ -222,7 +222,7 @@ module.exports = {
                user.displayName = user.displayName || profile.name;
                user.save(function() {
                  var token = createJWT(user);
-                 res.send({
+                 res.json({
                    token: token
                  });
                });
@@ -233,11 +233,11 @@ module.exports = {
            User.findOne({email: profile.email}, function(err, existingUser) {
              if (existingUser) {
                  if (existingUser.provider === 'Facebook') {
-                   return res.send({
+                   return res.json({
                      token: createJWT(existingUser)
                    });
                  } else if  (existingUser.provider === 'Google' || existingUser.provider === 'Username & Password' || existingUser.provider === 'Twitter') {
-                   return res.status(400).send({message: 'You already have a ' + existingUser.provider + ' Account'});
+                   return res.status(400).json({message: 'You already have a ' + existingUser.provider + ' Account'});
                  }
              } else {
              var user = new User();
@@ -248,7 +248,7 @@ module.exports = {
              user.displayName = profile.name;
              user.save(function() {
                var token = createJWT(user);
-               res.send({
+               res.json({
                  token: token
                });
              });
@@ -277,7 +277,7 @@ module.exports = {
       var oauthToken = qs.parse(body);
 
       // Step 2. Send OAuth token back to open the authorization screen.
-      res.send(oauthToken);
+      res.json(oauthToken);
     });
   } else {
     // Part 2 of 2: Second request after Authorize app is clicked.
@@ -310,7 +310,7 @@ module.exports = {
         if (req.header('Authorization')) {
           User.findOne({ twitter: profile.id }, function(err, existingUser) {
             if (existingUser) {
-              return res.status(409).send({ message: 'There is already a Twitter account that belongs to you' });
+              return res.status(409).json({ message: 'There is already a Twitter account that belongs to you' });
             }
 
             var token = req.header('Authorization').split(' ')[1];
@@ -318,14 +318,14 @@ module.exports = {
 
             User.findById(payload.sub, function(err, user) {
               if (!user) {
-                return res.status(400).send({ message: 'User not found' });
+                return res.status(400).json({ message: 'User not found' });
               }
               user.provider = 'Twitter';
               user.twitter = profile.id;
               user.displayName = user.displayName || profile.name;
               user.picture = user.picture || profile.profile_image_url.replace('_normal', '');
               user.save(function(err) {
-                res.send({ token: createJWT(user) });
+                res.json({ token: createJWT(user) });
               });
             });
           });
@@ -334,11 +334,11 @@ module.exports = {
           User.findOne({email: profile.email}, function(err, existingUser) {
             if (existingUser) {
                 if (existingUser.provider === 'Twitter') {
-                  return res.send({
+                  return res.json({
                     token: createJWT(existingUser)
                   });
                 } else if  (existingUser.provider === 'Google' || existingUser.provider === 'Username & Password' || existingUser.provider === 'Facebook') {
-                  return res.status(400).send({message: 'You already have a ' + existingUser.provider + ' Account'});
+                  return res.status(400).json({message: 'You already have a ' + existingUser.provider + ' Account'});
                 }
 
             var user = new User();
@@ -347,7 +347,7 @@ module.exports = {
             user.displayName = profile.name;
             user.picture = profile.profile_image_url.replace('_normal', '');
             user.save(function() {
-              res.send({ token: createJWT(user) });
+              res.json({ token: createJWT(user) });
             });
           }});
         }
@@ -361,12 +361,12 @@ module.exports = {
     var providers = ['facebook', 'google', 'twitter'];
 
     if (providers.indexOf(provider) === -1) {
-      return res.status(400).send({ message: 'Unknown OAuth Provider' });
+      return res.status(400).json({ message: 'Unknown OAuth Provider' });
     }
 
     User.findById(req.user, function(err, user) {
       if (!user) {
-        return res.status(400).send({ message: 'User Not Found' });
+        return res.status(400).json({ message: 'User Not Found' });
       }
       user[provider] = undefined;
       user.save(function() {

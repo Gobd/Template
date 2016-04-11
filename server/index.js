@@ -1,34 +1,34 @@
-var express = require('express'),
-  bodyParser = require('body-parser'),
-  cors = require('cors'),
-  port = 3001,
-  compression = require('compression'),
-  mongoose = require('mongoose'),
-  config = require('./config'),
-  jwt = require('jwt-simple'),
-  request = require('request'),
-  moment = require('moment'),
-  qs = require('querystring'),
-  User = require('./models/user.js'),
-  accounts = require('./endpoints/accounts.js'),
-  helmet = require('helmet'),
-  _ = require('lodash'),
-  app = express();
+const express = require('express'),
+    bodyParser = require('body-parser'),
+    cors = require('cors'),
+    port = 3001,
+    compression = require('compression'),
+    mongoose = require('mongoose'),
+    helmet = require('helmet'),
+    app = express(),
+    Promise = require('bluebird'),
+    config = require('./config.js'),
+    accounts = require('./endpoints/accounts.js'),
+    checkRole = require('./checkRole.js'),
+    data = require('./endpoints/data.js'),
+    protectJSON = require('./protectJSON.js');
 
+mongoose.Promise = require('bluebird');
 mongoose.connect('mongodb://localhost/weekly');
 mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
-mongoose.connection.once('open', function() {
-  console.log('Connected to MongoDB!');
+mongoose.connection.once('open', function () {
+    console.log('Connected to MongoDB!');
 });
 
 app.use(helmet());
+app.use(protectJSON);
 app.use(compression());
-app.use(express.static('../dist'));
+app.use(express.static(__dirname + '/../dist'));
 app.use(cors());
 app.options('*', cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
-  extended: true
+    extended: true
 }));
 
 app.get('/api/me', checkRole('user'), accounts.getApiMe);
@@ -40,39 +40,16 @@ app.post('/auth/facebook', accounts.postAuthFacebook);
 app.post('/auth/twitter', accounts.postAuthTwitter);
 app.post('/auth/unlink', checkRole('user'), accounts.postAuthUnlink);
 
-function checkRole(role) {
-  return function(req, res, next) {
-    if (!req.header('Authorization')) {
-      return res.status(401).send({
-        message: 'Please make sure your request has an Authorization header'
-      });
-    }
-    var token = req.header('Authorization').split(' ')[1];
-    var payload = null;
-    try {
-      payload = jwt.decode(token, config.TOKEN_SECRET, false, 'HS256');
-    } catch (err) {
-      return res.status(401).send({
-        message: err.message
-      });
-    }
-    if (payload.exp <= moment().unix()) {
-      return res.status(401).send({
-        message: 'Token has expired'
-      });
-    } else if (_.indexOf(userRoles, payload.role) >= _.indexOf(userRoles, role)) {
-      req.user = payload.sub;
-      next();
-    } else {
-      return res.status(401).send({
-        message: 'Incorrect role'
-      });
-    }
-  };
-}
+app.post('/api/bus', checkRole('user'), data.addBus);
+app.put('/api/bus/:id', checkRole('user'), data.editBus);
+app.delete('/api/bus/:id', checkRole('user'), data.deleteBus);
 
-app.listen(port, function() {
-  console.log('Listening on port ' + port);
+app.post('/api/deal', checkRole('user'), data.addDeal);
+app.put('/api/deal/:id', checkRole('user'), data.editDeal);
+app.delete('/api/deal/:id', checkRole('user'), data.deleteDeal);
+
+app.listen(port, function () {
+    console.log('Listening on port ' + port);
 });
 
 module.exports = app;

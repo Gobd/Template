@@ -1,0 +1,38 @@
+<!--difficult, because business requires a deal, so must do the whole new bus then save thing on the backend -->
+<!--must add loc and deals on backend-->
+
+<div>
+    <h3>add both a business and their first deal</h3>
+    <form ng-submit="addBus(addBusData)" name="addBusForm">
+        <input type="text" placeholder="Business Name" ng-model="addBusData.bus.busName" required autofocus>
+        <input type="text" placeholder="Business Address" ng-model="addBusData.bus.address" required>
+        <input type="text" placeholder="Deal Name" ng-model="addBusData.deal.dealsName" required>
+        <input type="text" placeholder="Deal Day" ng-model="addBusData.deal.day" required>
+        <button type="submit" ng-disabled="addBusForm.$invalid">Submit</button>
+    </form>
+</div>
+
+{{response.data[0]}}
+<br/>
+<br/>
+{{response.data[1]}}
+
+<br/>
+<h3>need a way to select days and times</h3>
+<br/>
+
+<div>
+    <h3>somehow add deal to existing business (must first find business to attach deal to?)</h3>
+    <form ng-submit="addDeal(deal)" name="addDealForm">
+        <input type="text" placeholder="Deal Name" ng-model="deal.dealsName" required autofocus>
+        <input type="text" placeholder="Deal Day" ng-model="deal.day" required>
+        <input type="text" placeholder="Business ID" ng-model="deal.bus" required>
+        <button type="submit" ng-disabled="addDealForm.$invalid">Submit</button>
+    </form>
+</div>
+
+<br/>
+
+<div>
+    <h3>add an address to a business</h3>
+</div>
